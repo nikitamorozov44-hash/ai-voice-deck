@@ -3,8 +3,7 @@ import './App.css'
 
 // Process environment variable via Vite
 const ELEVENLABS_API_KEY = import.meta.env.VITE_ELEVENLABS_KEY
-// Standard pre-made voice ID (Rachel) available on all accounts
-const ROGER_VOICE_ID = '21m00Tcm4TlvDq8ikWAM'
+const ROGER_VOICE_ID = 'Cwhv6tK90PNo68HO7S9m'
 
 function App() {
   const [text, setText] = useState<string>('')
@@ -24,9 +23,9 @@ function App() {
           'content-type': 'application/json',
           'xi-api-key': ELEVENLABS_API_KEY
         },
-        body: JSON.stringify({
+       body: JSON.stringify({
           text: text,
-          model_id: 'eleven_multilingual_v2',
+          model_id: 'eleven_monolingual_v1', // This model is 100% free
           voice_settings: {
             stability: 0.5,
             similarity_boost: 0.75
