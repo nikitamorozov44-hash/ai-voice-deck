@@ -3,7 +3,7 @@ import './App.css'
 
 // Process environment variable via Vite
 const ELEVENLABS_API_KEY = import.meta.env.VITE_ELEVENLABS_KEY
-// Взяли официальный дефолтный ID голоса (George) из примера
+// Используем проверенный рабочий голос George
 const ROGER_VOICE_ID = 'JBFqnCBsd6RMkjVDRZzb'
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
     try {
       setIsSpeaking(true)
 
-      // Отправляем прямой fetch-запрос к API ElevenLabs
+      // Send text to ElevenLabs API
       const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${ROGER_VOICE_ID}`, {
         method: 'POST',
         headers: {
@@ -26,7 +26,7 @@ function App() {
         },
         body: JSON.stringify({
           text: text,
-          model_id: 'eleven_multilingual_v2', // Модель из официального примера
+          model_id: 'eleven_multilingual_v2',
           voice_settings: {
             stability: 0.5,
             similarity_boost: 0.75
@@ -40,7 +40,7 @@ function App() {
         throw new Error('API Error')
       }
 
-      // Воспроизводим полученное аудио в браузере
+      // Process and play the audio response
       const audioBlob = await response.blob()
       const audioUrl = URL.createObjectURL(audioBlob)
       const audio = new Audio(audioUrl)
@@ -61,12 +61,12 @@ function App() {
     }
   }
 
-return (
+  return (
     <div className="card-container">
       <h2>AI Voice Deck 🎙️</h2>
       <p className="subtitle">ElevenLabs Neural Engine</p>
 
-      {/* ПЕРЕНЕСЛИ СЮДА: Теперь плашка идет сразу после заголовков */}
+      {/* Плашка отцентрирована и находится строго НАД полем ввода */}
       <div className="voice-info">
         <span className="badge">Voice:</span> <strong>George (Official Default)</strong>
       </div>
