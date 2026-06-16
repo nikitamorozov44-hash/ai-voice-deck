@@ -3,7 +3,8 @@ import './App.css'
 
 // Process environment variable via Vite
 const ELEVENLABS_API_KEY = import.meta.env.VITE_ELEVENLABS_KEY
-const ROGER_VOICE_ID = 'Cwhv6tK90PNo68HO7S9m'
+// Standard pre-made voice ID (Rachel) available on all accounts
+const ROGER_VOICE_ID = '21m00Tcm4TlvDq8ikWAM'
 
 function App() {
   const [text, setText] = useState<string>('')
