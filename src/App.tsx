@@ -3,7 +3,8 @@ import './App.css'
 
 // Process environment variable via Vite
 const ELEVENLABS_API_KEY = import.meta.env.VITE_ELEVENLABS_KEY
-const ROGER_VOICE_ID = 'Cwhv6tK90PNo68HO7S9m'
+// ИСПРАВЛЕНО: Теперь тут стоит цифра 0 вместо буквы O
+const ROGER_VOICE_ID = 'Cwhv6tK90PNo68H07S9m'
 
 function App() {
   const [text, setText] = useState<string>('')
@@ -23,9 +24,9 @@ function App() {
           'content-type': 'application/json',
           'xi-api-key': ELEVENLABS_API_KEY
         },
-       body: JSON.stringify({
+        body: JSON.stringify({
           text: text,
-          model_id: 'eleven_monolingual_v1', // This model is 100% free
+          model_id: 'eleven_multilingual_v2', // Оптимальная модель для Роджера на бесплатном тарифе
           voice_settings: {
             stability: 0.5,
             similarity_boost: 0.75
@@ -34,7 +35,6 @@ function App() {
       })
 
       if (!response.ok) {
-        // Read the exact error message from ElevenLabs
         const errorData = await response.json().catch(() => ({}))
         console.error('ElevenLabs detailed error:', errorData)
         throw new Error('API Error')
