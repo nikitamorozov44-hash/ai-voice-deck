@@ -3,8 +3,8 @@ import './App.css'
 
 // Process environment variable via Vite
 const ELEVENLABS_API_KEY = import.meta.env.VITE_ELEVENLABS_KEY
-// ИСПРАВЛЕНО: Теперь тут стоит цифра 0 вместо буквы O
-const ROGER_VOICE_ID = 'Cwhv6tK90PNo68H07S9m'
+// Взяли официальный дефолтный ID голоса (George) из примера
+const ROGER_VOICE_ID = 'JBFqnCBsd6RMkjVDRZzb'
 
 function App() {
   const [text, setText] = useState<string>('')
@@ -16,7 +16,7 @@ function App() {
     try {
       setIsSpeaking(true)
 
-      // Send text to ElevenLabs API
+      // Отправляем прямой fetch-запрос к API ElevenLabs
       const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${ROGER_VOICE_ID}`, {
         method: 'POST',
         headers: {
@@ -26,7 +26,7 @@ function App() {
         },
         body: JSON.stringify({
           text: text,
-          model_id: 'eleven_multilingual_v2', // Оптимальная модель для Роджера на бесплатном тарифе
+          model_id: 'eleven_multilingual_v2', // Модель из официального примера
           voice_settings: {
             stability: 0.5,
             similarity_boost: 0.75
@@ -40,7 +40,7 @@ function App() {
         throw new Error('API Error')
       }
 
-      // Process and play the audio response
+      // Воспроизводим полученное аудио в браузере
       const audioBlob = await response.blob()
       const audioUrl = URL.createObjectURL(audioBlob)
       const audio = new Audio(audioUrl)
@@ -67,7 +67,7 @@ function App() {
       <p className="subtitle">ElevenLabs Neural Engine</p>
 
       <div className="voice-info">
-        <span className="badge">Voice:</span> <strong>Roger (Laid-Back)</strong>
+        <span className="badge">Voice:</span> <strong>George (Official Default)</strong>
       </div>
 
       <textarea
