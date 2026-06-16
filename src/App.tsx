@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import './App.css'
 
-// Insert your ElevenLabs API key here
-const ELEVENLABS_API_KEY = 'sk_3af9ee72654d0eda47f6a8324bfe0956ef6033e9426ae180'
+// Process environment variable via Vite
+const ELEVENLABS_API_KEY = import.meta.env.VITE_ELEVENLABS_KEY
 const ROGER_VOICE_ID = 'Cwhv6tK90PNo68HO7S9m'
 
 function App() {
@@ -33,7 +33,12 @@ function App() {
         })
       })
 
-      if (!response.ok) throw new Error('API Error')
+      if (!response.ok) {
+        // Read the exact error message from ElevenLabs
+        const errorData = await response.json().catch(() => ({}))
+        console.error('ElevenLabs detailed error:', errorData)
+        throw new Error('API Error')
+      }
 
       // Process and play the audio response
       const audioBlob = await response.blob()
