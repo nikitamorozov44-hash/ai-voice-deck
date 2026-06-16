@@ -111,4 +111,8 @@ select {
 
 select:focus {
   border-color: #6366f1;
+
+  .voice-info {
+  margin-top: 4px;     
+  margin-bottom: 20px;
 }

@@ -61,11 +61,12 @@ function App() {
     }
   }
 
-  return (
+return (
     <div className="card-container">
       <h2>AI Voice Deck 🎙️</h2>
       <p className="subtitle">ElevenLabs Neural Engine</p>
 
+      {/* ПЕРЕНЕСЛИ СЮДА: Теперь плашка идет сразу после заголовков */}
       <div className="voice-info">
         <span className="badge">Voice:</span> <strong>George (Official Default)</strong>
       </div>
