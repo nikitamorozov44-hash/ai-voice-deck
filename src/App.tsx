@@ -1,47 +1,57 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import './App.css'
+
+// Insert your ElevenLabs API key here
+const ELEVENLABS_API_KEY = 'sk_3af9ee72654d0eda47f6a8324bfe0956ef6033e9426ae180'
+const ROGER_VOICE_ID = 'Cwhv6tK90PNo68HO7S9m'
 
 function App() {
   const [text, setText] = useState<string>('')
   const [isSpeaking, setIsSpeaking] = useState<boolean>(false)
-  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([])
-  const [selectedVoice, setSelectedVoice] = useState<string>('')
 
-  // get voices from browser
-  useEffect(() => {
-    const initVoices = () => {
-      const list = window.speechSynthesis.getVoices()
-      setVoices(list)
-      
-      // default to english or first available
-      const defaultVoice = list.find(v => v.lang.includes('en')) || list[0]
-      if (defaultVoice) setSelectedVoice(defaultVoice.name)
-    }
-
-    initVoices()
-    window.speechSynthesis.onvoiceschanged = initVoices
-  }, [])
-
-  // main speak function
-  const handleSpeak = () => {
+  const handleSpeak = async () => {
     if (!text.trim() || isSpeaking) return
 
-    const utterance = new SpeechSynthesisUtterance(text)
-    const activeVoice = voices.find(v => v.name === selectedVoice)
-    
-    if (activeVoice) utterance.voice = activeVoice
+    try {
+      setIsSpeaking(true)
 
-    utterance.onstart = () => setIsSpeaking(true)
-    utterance.onend = () => setIsSpeaking(false)
+      // Send text to ElevenLabs API
+      const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${ROGER_VOICE_ID}`, {
+        method: 'POST',
+        headers: {
+          'accept': 'audio/mpeg',
+          'content-type': 'application/json',
+          'xi-api-key': ELEVENLABS_API_KEY
+        },
+        body: JSON.stringify({
+          text: text,
+          model_id: 'eleven_multilingual_v2',
+          voice_settings: {
+            stability: 0.5,
+            similarity_boost: 0.75
+          }
+        })
+      })
 
-    window.speechSynthesis.speak(utterance)
+      if (!response.ok) throw new Error('API Error')
+
+      // Process and play the audio response
+      const audioBlob = await response.blob()
+      const audioUrl = URL.createObjectURL(audioBlob)
+      const audio = new Audio(audioUrl)
+      
+      audio.onended = () => setIsSpeaking(false)
+      await audio.play()
+
+    } catch (error) {
+      console.error(error)
+      setIsSpeaking(false)
+    }
   }
 
-  // handle enter key press inside textarea
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    // send on enter, shift+enter for new line
     if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault() // stop creating new line in textarea
+      e.preventDefault()
       handleSpeak()
     }
   }
@@ -49,24 +59,14 @@ function App() {
   return (
     <div className="card-container">
       <h2>AI Voice Deck 🎙️</h2>
-      <p className="subtitle">Convert your text into realistic speech instantly</p>
+      <p className="subtitle">ElevenLabs Neural Engine</p>
 
-      <div className="select-container">
-        <label>Choose Voice:</label>
-        <select
-          value={selectedVoice}
-          onChange={(e) => setSelectedVoice(e.target.value)}
-        >
-          {voices.map((v) => (
-            <option key={v.name} value={v.name}>
-              {v.name} ({v.lang})
-            </option>
-          ))}
-        </select>
+      <div className="voice-info">
+        <span className="badge">Voice:</span> <strong>Roger (Laid-Back)</strong>
       </div>
 
       <textarea
-        placeholder="Type something here..."
+        placeholder="Type something..."
         value={text}
         onChange={(e) => setText(e.target.value)}
         onKeyDown={handleKeyDown}
@@ -77,7 +77,7 @@ function App() {
         disabled={isSpeaking || !text.trim()}
         className={isSpeaking ? 'speaking' : ''}
       >
-        {isSpeaking ? 'Speaking...' : 'Generate Voice'}
+        {isSpeaking ? 'Generating...' : 'Generate'}
       </button>
     </div>
   )
