@@ -1,73 +1,44 @@
-# React + TypeScript + Vite
+Markdown
+# AI Voice Deck 🎙️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A sleek, lightweight, and modern Text-to-Speech (TTS) web application built with **React**, **TypeScript**, and **Vite**. The application integrates directly with the **ElevenLabs Neural Engine API** to deliver high-quality, real-time voice generation.
 
-Currently, two official plugins are available:
+## 🚀 Live Demo
+👉 **[View Deploy on Vercel](https://ai-voice-deck.vercel.app/)**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## ✨ Features
+* **Real-time Neural TTS:** Direct client-side integration with ElevenLabs REST API using the advanced `eleven_multilingual_v2` model.
+* **Production-Safe Security:** Built using Vite environment variables to ensure API keys are injected securely at build time and never exposed in the source control.
+* **Modern UI/UX:** A responsive, clean dark-themed control deck built with custom CSS, optimized for layout balance and clarity.
+* **Keyboard Enhancements:** Form-aware event handling that allows triggers like `Enter` for instant generation, bypassing empty or ongoing requests.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🛠️ Tech Stack
+* **Frontend Core:** React 18 (Functional Components, Hooks)
+* **Type Safety:** TypeScript
+* **Build Tool & Bundler:** Vite (Fast Refresh & optimized production builds)
+* **API Integration:** Native Browser Fetch API (Streaming audio blobs directly into native HTML5 Audio context)
+* **Deployment:** Vercel Global Edge Network
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Local Setup & Installation
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Follow these steps to run the project locally on your machine:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+1. Clone the Repository:
+git clone https://github.com/YOUR_GITHUB_USERNAME/AI-Voice-Deck.git
+cd AI-Voice-Deck
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. Install Dependencies:
+npm install
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+3. Configure Environment Variables:
+Create a .env file in the root directory of the project and add your key:
+VITE_ELEVENLABS_KEY=your_actual_elevenlabs_api_key_here
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+4. Run Development Server:
+npm run dev
